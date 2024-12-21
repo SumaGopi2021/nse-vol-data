@@ -29,5 +29,5 @@ jobs:
     - name: Upload Excel file
       uses: actions/upload-artifact@v4  # Use the latest version
       with:
-        name: nse_500_volume_data
-        path: nse_500_volume_data.xlsx
+        name: NSE_stocks_volume_data
+        path: NSE_stocks_volume_data.xlsx
