@@ -9,8 +9,11 @@ tickers = ['RELIANCE.NS', 'TCS.NS', 'HDFCBANK.NS']  # Add all NSE 500 tickers he
 end_date = datetime.datetime.now().strftime('%Y-%m-%d')
 start_date = (datetime.datetime.now() - datetime.timedelta(days=365)).strftime('%Y-%m-%d')
 
-# Initialize an empty DataFrame to store the volume data
-volume_data = pd.DataFrame()
+# Generate the date range
+date_range = pd.date_range(start=start_date, end=end_date)
+
+# Initialize an empty DataFrame to store the volume data with dates as rows
+volume_data = pd.DataFrame(index=date_range)
 
 # Initialize a list to store failed tickers
 failed_tickers = []
@@ -23,14 +26,11 @@ for ticker in tickers:
             volume_data[ticker] = data['Volume']
         else:
             print(f"No data found for ticker: {ticker}. Considering volume as 0.")
-            volume_data[ticker] = [0] * len(pd.date_range(start=start_date, end=end_date))
+            volume_data[ticker] = [0] * len(date_range)
     except Exception as e:
         print(f"Error retrieving data for ticker: {ticker}. Error: {e}. Considering volume as 0.")
-        volume_data[ticker] = [0] * len(pd.date_range(start=start_date, end=end_date))
+        volume_data[ticker] = [0] * len(date_range)
         failed_tickers.append(ticker)
-
-# Add dates as rows
-volume_data.index = pd.date_range(start=start_date, end=end_date)
 
 # Save the volume data to an Excel file
 volume_data.to_excel('nse_500_volume_data.xlsx')
